@@ -1,0 +1,399 @@
+/* The camera moves independently of the product's settling motion. */
+.opening-runway {
+  position: relative;
+  background: #231913;
+}
+.opening-runway.directed {
+  height: 192svh;
+}
+.opening-runway .opening {
+  position: sticky;
+  top: 0;
+  margin: 0;
+  color: #f9f1e2;
+  isolation: isolate;
+}
+.opening header {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 8;
+  color: #fff6e9;
+}
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  height: 100vh;
+  height: 100svh;
+  min-height: 500px;
+  background: #281c16;
+}
+.set-light {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(0deg, #170d09b3, transparent 33%),
+    linear-gradient(90deg, #1e130f6b, transparent 65%),
+    url(/images/balcao.webp) center 62% / cover;
+}
+.hero-mark {
+  position: absolute;
+  top: clamp(91px, 14.8svh, 175px);
+  left: 3.7%;
+  width: 92.6%;
+  margin: 0;
+  line-height: 0.84;
+}
+.word-window {
+  display: flex;
+  justify-content: space-between;
+  overflow: clip;
+  padding-block: 0.035em 0.055em;
+  color: #f4ebda;
+  font:
+    400 23.1vw/0.8 "Archivo Black",
+    "Arial Black",
+    sans-serif;
+  letter-spacing: -0.093em;
+}
+.word-window > span {
+  display: block;
+}
+.word-window > span:last-child {
+  margin-right: 0.075em;
+}
+.hero-mark em {
+  position: absolute;
+  top: 93%;
+  left: 13%;
+  font: italic 400 clamp(4rem, 8.5vw, 10rem)/0.83 var(--serif);
+  letter-spacing: -0.07em;
+  color: #f0b582;
+  transform: rotate(-7deg);
+  transform-origin: left;
+}
+.cup-stage {
+  position: absolute;
+  z-index: 2;
+  width: min(48vw, 71svh);
+  aspect-ratio: 1;
+  left: 46%;
+  top: 24.5%;
+  pointer-events: none;
+}
+.cup-camera,
+.cup-take {
+  position: absolute;
+  inset: 0;
+  transform-origin: 47.2% 32%;
+}
+.cup-poster,
+.cup-film {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.cup-film {
+  visibility: hidden;
+}
+.cup-film.playing {
+  visibility: visible;
+  mask: url(/images/ceramica-mask.svg) center / 100% 100% no-repeat;
+}
+
+.contact-shadow {
+  position: absolute;
+  inset: 74% 4% 4% 8%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    #130905f0 12%,
+    #1e100a99 46%,
+    transparent 73%
+  );
+  transform: rotate(-8deg);
+}
+.vapor-plume {
+  position: absolute;
+  z-index: 2;
+  left: 24%;
+  bottom: 69%;
+  width: 42%;
+  height: 54%;
+  pointer-events: none;
+}
+.vapor-plume i {
+  position: absolute;
+  inset: 0;
+  background: url(/images/vapor.webp) bottom center / 100% 100% no-repeat;
+  opacity: 0.46;
+  transform-origin: 50% 98%;
+}
+.vapor-plume i:nth-child(2) {
+  opacity: 0.27;
+  scale: -0.69 0.81;
+}
+.vapor-plume i:nth-child(3) {
+  opacity: 0.2;
+  scale: 0.85 0.65;
+}
+.foreground-bean {
+  position: absolute;
+  z-index: 3;
+  width: clamp(30px, 3.6vw, 80px);
+  right: 9%;
+  bottom: 12%;
+  rotate: 65deg;
+  filter: blur(1px) drop-shadow(5px 8px 3px #1b0e09aa);
+  pointer-events: none;
+}
+.hero-caption {
+  position: absolute;
+  z-index: 4;
+  bottom: clamp(78px, 11.2svh, 130px);
+  left: var(--gutter);
+  max-width: 44%;
+  text-shadow: 0 2px 18px #28150e5e;
+}
+.hero-caption .rule {
+  color: #ecc298;
+  margin-bottom: 0.7rem;
+}
+.opening-line {
+  font: 400 clamp(1.8rem, 3.4vw, 3.9rem)/1.05 var(--serif);
+  letter-spacing: -0.03em;
+  margin-bottom: 1.15rem;
+}
+.opening-line em {
+  font-weight: 400;
+}
+.magnet {
+  display: inline-flex;
+  border-radius: 2em;
+  text-shadow: none;
+}
+.magnet .button {
+  pointer-events: none;
+  transform: translate(var(--mx, 0), var(--my, 0));
+  transition:
+    transform 0.19s ease-out,
+    background 0.18s;
+}
+.hero-foot {
+  position: absolute;
+  inset: auto var(--gutter) 0;
+  z-index: 4;
+  min-height: 56px;
+}
+.espresso-portal {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  clip-path: ellipse(0 0 at 50% 50%);
+  background:
+    linear-gradient(90deg, #130b071f, transparent),
+    var(--preparation, none);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .word-window > span {
+    animation: letter-lift 0.78s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+  .vapor-plume i {
+    animation: plume-rise 5.8s ease-in-out infinite;
+  }
+  .vapor-plume i:nth-child(2) {
+    animation-delay: -2.9s;
+    animation-duration: 6.4s;
+  }
+  .vapor-plume i:nth-child(3) {
+    animation-delay: -4.1s;
+    animation-duration: 7.2s;
+  }
+  .hero.paused .vapor-plume i,
+  .hero[data-still="true"] .vapor-plume i {
+    animation-play-state: paused;
+  }
+}
+@keyframes letter-lift {
+  from {
+    transform: translateY(0.31em) rotate(2deg);
+    opacity: 0.64;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+@keyframes plume-rise {
+  0% {
+    opacity: 0;
+    transform: translate(0, 8%) scale(0.65, 0.83) rotate(6deg);
+  }
+  32% {
+    opacity: 0.65;
+  }
+  70% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-6%, -14%) scale(1.16, 1.12) rotate(-11deg);
+  }
+}
+@media (min-aspect-ratio: 19/10) and (min-width: 701px) {
+  .hero-mark {
+    top: 14svh;
+  }
+  .word-window {
+    font-size: min(22vw, 43svh);
+  }
+  .hero-mark em {
+    font-size: 10svh;
+  }
+  .cup-stage {
+    top: 24%;
+    width: 74svh;
+    left: 55%;
+  }
+}
+@media (max-width: 700px) {
+  .vapor-plume i:nth-child(3) {display:none}
+  .hero {
+    min-height: 550px;
+  }
+  .opening-runway.directed {
+    height: 136svh;
+  }
+  .set-light {
+    background-image:
+      linear-gradient(0deg, #170d09b8, transparent 44%),
+      url(/images/balcao-small.webp);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position:
+      center,
+      63% center;
+  }
+  .hero-mark {
+    left: 4.6%;
+    width: 90.8%;
+    top: clamp(78px, 13.4svh, 135px);
+  }
+  .word-window {
+    font-size: 22.8vw;
+  }
+  .hero-mark em {
+    left: 2%;
+    top: 97%;
+    font-size: clamp(3.9rem, 16.5vw, 6.3rem);
+  }
+  .cup-stage {
+    width: min(88vw, 47svh);
+    left: auto;
+    right: 3%;
+    top: clamp(155px, 28.5svh, 305px);
+  }
+  .hero-caption {
+    max-width: 91%;
+    bottom: clamp(57px, 8.3svh, 90px);
+  }
+  .hero-caption .rule {
+    font-size: 0.62rem;
+    margin-bottom: 0.52rem;
+  }
+  .opening-line {
+    font-size: clamp(1.9rem, 7.9vw, 2.8rem);
+    margin-bottom: 0.84rem;
+  }
+  .foreground-bean {
+    right: 6%;
+    bottom: 26%;
+    width: 7.5vw;
+  }
+  .hero-foot {
+    min-height: 48px;
+  }
+}
+@media (max-height: 540px) and (min-width: 701px) {
+  .hero {
+    min-height: 390px;
+  }
+  .hero-mark {
+    top: 75px;
+  }
+  .hero-caption {
+    bottom: 52px;
+  }
+  .hero-caption .rule {
+    display: none;
+  }
+  .hero-mark em {
+    left: 38%;
+  }
+  .opening-line {
+    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+  }
+  .hero-foot {
+    min-height: 38px;
+  }
+}
+@media (max-height: 680px) and (max-width: 700px) {
+  .cup-stage {
+    top: 26%;
+    width: min(78vw, 45svh);
+  }
+  .hero-caption {
+    bottom: 53px;
+  }
+  .hero-mark {
+    top: 72px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cup-film,
+  .vapor-plume i:not(:first-child) {
+    display: none;
+  }
+  .vapor-plume {
+    opacity: 0.45;
+  }
+}
+
+.opening-runway.in-motion {
+  --preparation:
+    url(/images/preparo-hd.webp) center 48% / cover;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cup-take {
+    animation: cup-settle 0.46s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .contact-shadow {
+    animation: shadow-settle 0.6s ease-out both;
+  }
+}
+.in-motion .cup-take,
+.in-motion .contact-shadow {
+  animation: none;
+}
+@keyframes cup-settle {
+  from {
+    transform: translateY(-3%) rotate(-3deg);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes shadow-settle {
+  from {
+    transform: rotate(-8deg) scale(0.82);
+    opacity: 0.45;
+  }
+  to {
+    opacity: 1;
+  }
+}

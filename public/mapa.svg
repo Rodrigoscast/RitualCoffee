@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
+ <defs>
+  <pattern id="blocks" patternUnits="userSpaceOnUse" width="120" height="82" patternTransform="rotate(-26)">
+   <rect width="120" height="82" fill="#f4ebd8"/><rect x="5" y="5" width="110" height="72" rx="4" fill="#d5c5a8"/>
+   <path d="M13 16h28v19H13zm38 0h23v45H51zm32 1h24v21H83zM14 46h24v16H14zm68 0h21v18H82z" fill="#c8b694"/>
+  </pattern>
+ </defs>
+ <rect width="640" height="480" fill="url(#blocks)"/>
+ <path d="M-15 310Q121 288 206 227T420 142Q524 110 685 126M93-25Q174 98 260 174T460 346Q521 401 559 503" stroke="#bba587" stroke-width="21" fill="none"/>
+ <path d="M-15 310Q121 288 206 227T420 142Q524 110 685 126M93-25Q174 98 260 174T460 346Q521 401 559 503" stroke="#f8efdd" stroke-width="16" fill="none"/>
+ <path d="m483 174 94-16 41 76-98 43-43-57zM35 41l66-30 18 44-63 32z" fill="#a8ac85" stroke="#ede4cb" stroke-width="7"/>
+ <g transform="translate(318 230)"><circle r="39" fill="#ad7954" opacity=".29"/><path d="M0 9C-8-2-24-15-24-30a24 24 0 1 1 48 0C24-15 8-2 0 9Z" fill="#553824"/><circle cy="-30" r="7" fill="#f4e8cd"/></g>
+</svg>
