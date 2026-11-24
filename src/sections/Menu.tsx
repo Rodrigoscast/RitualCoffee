@@ -12,14 +12,14 @@ export function Menu({ add }: { add: (c: Coffee) => void }) {
       className="section menu"
       data-drink={coffee.id}
     >
-      <p className="eyebrow rule">Cardápio da casa</p>
-      <div className="section-title">
+      <p className="eyebrow rule reveal">Cardápio da casa</p>
+      <div className="section-title reveal">
         <h2>
           Escolha seu <em>café.</em>
         </h2>
         <span className="aside-note">Preços ilustrativos</span>
       </div>
-      <div className="selector" aria-label="Selecione uma bebida">
+      <div className="selector reveal" aria-label="Selecione uma bebida">
         {coffees.map((c, i) => (
           <button
             key={c.id}
@@ -31,7 +31,7 @@ export function Menu({ add }: { add: (c: Coffee) => void }) {
         ))}
       </div>
       <div className="product">
-        <div className="product-photo">
+        <div className="product-photo reveal">
           <img
             key={coffee.id}
             src={"/images/" + coffee.id + ".webp"}
@@ -39,7 +39,7 @@ export function Menu({ add }: { add: (c: Coffee) => void }) {
             alt={coffee.name + " da casa servido em mesa de pedra clara"}
           />
         </div>
-        <div className="product-copy" aria-live="polite" aria-atomic="true">
+        <div className="product-copy reveal" aria-live="polite" aria-atomic="true">
           <p className="eyebrow">
             {coffee.size} <span> / </span> {coffee.notes}
           </p>

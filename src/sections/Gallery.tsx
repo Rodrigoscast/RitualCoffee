@@ -74,8 +74,8 @@ export function Gallery() {
 
   return (
     <section className="section gallery" id="casa" ref={section} tabIndex={-1}>
-      <p className="eyebrow rule">A casa</p>
-      <div className="gallery-heading">
+      <p className="eyebrow rule reveal">A casa</p>
+      <div className="gallery-heading reveal">
         <h2>
           Por dentro <em>da Ritual.</em>
         </h2>
@@ -98,7 +98,7 @@ export function Gallery() {
         </div>
       </div>
       <div
-        className="photo-rail"
+        className="photo-rail reveal reveal-fade"
         ref={rail}
         id="fotos"
         role="region"

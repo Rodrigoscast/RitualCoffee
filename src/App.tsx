@@ -49,6 +49,7 @@ function App() {
     setOpen(true);
   }
   useEffect(() => {
+    const targets = document.querySelectorAll<HTMLElement>(".reveal");
     const reveal = new IntersectionObserver(
       (entries) =>
         entries.forEach((e) => {
@@ -57,9 +58,21 @@ function App() {
             reveal.unobserve(e.target);
           }
         }),
-      { threshold: 0.12 },
+      { rootMargin: "0px 0px -24px 0px" },
     );
-    document.querySelectorAll(".reveal").forEach((el) => reveal.observe(el));
+    targets.forEach((el) => {
+      el.classList.add("reveal-ready");
+      reveal.observe(el);
+    });
+    function revealOnFocus(event: FocusEvent) {
+      if (!(event.target instanceof Element)) return;
+      const target = event.target.closest(".reveal");
+      if (!target) return;
+      target.classList.remove("reveal-ready");
+      target.classList.add("seen");
+      reveal.unobserve(target);
+    }
+    document.addEventListener("focusin", revealOnFocus);
     const runway = openingRunway.current!;
     let expandedHeight = 0;
     const updateHeader = () =>
@@ -78,6 +91,8 @@ function App() {
     return () => {
       clearTimeout(toastTimer.current);
       reveal.disconnect();
+      targets.forEach((el) => el.classList.remove("reveal-ready"));
+      document.removeEventListener("focusin", revealOnFocus);
       openingResize.disconnect();
       window.removeEventListener("scroll", updateHeader);
       window.removeEventListener("resize", measureHeader);
@@ -170,7 +185,7 @@ function App() {
         <Craft />
         <Gallery />
         <section className="section order" id="pedido">
-          <div>
+          <div className="reveal">
             <p className="eyebrow rule">Pedido demonstrativo</p>
             <h2>
               Monte seu <em>pedido.</em>
@@ -185,7 +200,7 @@ function App() {
           </div>
           <ul>
             {coffees.map((c) => (
-              <li key={c.id}>
+              <li key={c.id} className="reveal">
                 <img
                   src={"/images/" + c.id + ".webp"}
                   loading="lazy"
@@ -256,7 +271,7 @@ function App() {
             Explorar o cardápio <Icon name="arrow" />
           </a>
         </div>
-        <div className="footer-base">
+        <div className="footer-base reveal">
           <Brand />
           <span>Conceito demonstrativo de portfólio</span>
           <a href="#inicio">Voltar ao início ↑</a>

@@ -21,8 +21,8 @@ const stages = [
 export function Craft() {
   return (
     <section className="craft section" id="preparo">
-      <p className="eyebrow rule">Do grão à xícara</p>
-      <h2>
+      <p className="eyebrow rule reveal">Do grão à xícara</p>
+      <h2 className="reveal">
         A arte do <em>café.</em>
       </h2>
       <div className="craft-body">

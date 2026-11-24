@@ -792,8 +792,7 @@ footer.section {
   .paused .steam i {
     animation-play-state: paused;
   }
-  .bag-message,
-  .reveal.seen {
+  .bag-message {
     animation: appear 0.28s var(--ease);
   }
   .button:active,
@@ -803,17 +802,21 @@ footer.section {
   }
 }
 @media (prefers-reduced-motion: no-preference) {
-  .manifesto-img.seen img,
-  .map.seen img {
-    animation: photo-reveal 480ms var(--ease) both;
+  .reveal-ready {
+    transition: opacity 480ms var(--ease), transform 480ms var(--ease);
   }
-}
-@keyframes photo-reveal {
-  from {
-    clip-path: inset(0 0 12% 0);
+  .reveal-ready:not(.seen) {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: none;
   }
-  to {
-    clip-path: inset(0);
+  .reveal-ready.reveal-fade:not(.seen) {
+    transform: none;
+  }
+  .reveal-ready:focus-within {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
 @keyframes steam-rise {
@@ -1029,20 +1032,6 @@ footer.section {
 .manifesto-line > * {
   display: inline-block;
 }
-@media (prefers-reduced-motion: no-preference) {
-  .seen .manifesto-line > * {
-    animation: manifesto-enter 0.48s var(--ease) backwards;
-  }
-  .seen .manifesto-line:nth-child(2) > * {
-    animation-delay: 0.07s;
-  }
-}
-@keyframes manifesto-enter {
-  from {
-    transform: translateY(45%);
-    opacity: 0.5;
-  }
-}
 .gallery-heading {
   justify-content: space-between;
   gap: 1.5rem;
@@ -1055,7 +1044,7 @@ footer.section {
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
-.gallery-controls button:first-child svg {
+.gallery-controls button:first-of-type svg {
   rotate: 180deg;
 }
 .gallery-controls button:disabled {
