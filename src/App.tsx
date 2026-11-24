@@ -21,6 +21,7 @@ const links = [
 function App() {
   useAnchorScroll();
   const [menu, setMenu] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [bagLoaded, setBagLoaded] = useState(false);
   const [items, setItems] = useState<Quantities>({});
@@ -29,6 +30,7 @@ function App() {
     undefined,
   );
   const navToggle = useRef<HTMLButtonElement>(null);
+  const openingRunway = useRef<HTMLDivElement>(null);
   const count = Object.values(items).reduce((sum, n) => sum + (n || 0), 0);
   const close = useCallback(() => setOpen(false), []);
   const add = (c: Coffee) => {
@@ -58,9 +60,27 @@ function App() {
       { threshold: 0.12 },
     );
     document.querySelectorAll(".reveal").forEach((el) => reveal.observe(el));
+    const runway = openingRunway.current!;
+    let expandedHeight = 0;
+    const updateHeader = () =>
+      setScrolled(runway.getBoundingClientRect().bottom <= expandedHeight);
+    const measureHeader = () => {
+      expandedHeight = parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue("--header-height"),
+      );
+      updateHeader();
+    };
+    const openingResize = new ResizeObserver(measureHeader);
+    openingResize.observe(runway);
+    measureHeader();
+    window.addEventListener("scroll", updateHeader, { passive: true });
+    window.addEventListener("resize", measureHeader);
     return () => {
       clearTimeout(toastTimer.current);
       reveal.disconnect();
+      openingResize.disconnect();
+      window.removeEventListener("scroll", updateHeader);
+      window.removeEventListener("resize", measureHeader);
     };
   }, []);
   return (
@@ -68,48 +88,49 @@ function App() {
       <a className="skip" href="#cardapio">
         Ir para o cardápio
       </a>
-      <div id="inicio" className="opening-runway">
+      <header className={scrolled ? "scrolled" : ""}>
+        <Brand />
+        <nav
+          aria-label="Principal"
+          id="nav-links"
+          className={menu ? "expanded" : ""}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") {
+              setMenu(false);
+              navToggle.current?.focus();
+            }
+          }}
+        >
+          {links.map(([label, id]) => (
+            <a key={id} href={"#" + id} onClick={() => setMenu(false)}>
+              {label}
+            </a>
+          ))}
+        </nav>
+        <div className="header-tools">
+          <button
+            className="bag-link"
+            onClick={openBag}
+            aria-haspopup="dialog"
+          >
+            <Icon name="bag" />
+            <span className="bag-label">Sacola</span>
+            <span className="bag-count">{count}</span>
+          </button>
+          <button
+            className="mobile-menu icon-btn"
+            ref={navToggle}
+            aria-label={menu ? "Fechar menu" : "Abrir menu"}
+            aria-controls="nav-links"
+            aria-expanded={menu}
+            onClick={() => setMenu(!menu)}
+          >
+            <Icon name={menu ? "close" : "menu"} />
+          </button>
+        </div>
+      </header>
+      <div id="inicio" className="opening-runway" ref={openingRunway}>
         <div className="opening">
-          <header>
-            <Brand />
-            <nav
-              aria-label="Principal"
-              id="nav-links"
-              className={menu ? "expanded" : ""}
-              onKeyDown={(e) => {
-                if (e.key === "Escape") {
-                  setMenu(false);
-                  navToggle.current?.focus();
-                }
-              }}
-            >
-              {links.map(([label, id]) => (
-                <a key={id} href={"#" + id} onClick={() => setMenu(false)}>
-                  {label}
-                </a>
-              ))}
-            </nav>
-            <div className="header-tools">
-              <button
-                className="bag-link"
-                onClick={openBag}
-                aria-haspopup="dialog"
-              >
-                <Icon name="bag" />
-                Sacola <span>{count}</span>
-              </button>
-              <button
-                className="mobile-menu icon-btn"
-                ref={navToggle}
-                aria-label={menu ? "Fechar menu" : "Abrir menu"}
-                aria-controls="nav-links"
-                aria-expanded={menu}
-                onClick={() => setMenu(!menu)}
-              >
-                <Icon name={menu ? "close" : "menu"} />
-              </button>
-            </div>
-          </header>
           <Hero />
         </div>
       </div>

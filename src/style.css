@@ -1,12 +1,17 @@
 @import "tailwindcss/theme.css" layer(theme);
 
 :root {
-  --ink: #251c16;
-  --dark: #201712;
-  --cream: #f6f0e6;
+  --ink: #241b16;
+  --mineral: #e5dbcd;
+  --olive: #596148;
+  --terracotta: #b66a45;
+  --terracotta-ink: #8b482e;
+  --header-height: 78px;
+  --compact-header: 58px;
+  --cream: #f5f0e8;
   --caramel: #e3aa72;
   --line: #cec4b5;
-  --muted: #695d52;
+  --muted: #614d40;
   --serif: "Instrument Serif", Georgia, serif;
   --sans: "Geist Variable", Arial, sans-serif;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -77,16 +82,12 @@ svg {
 .skip:focus {
   transform: none;
 }
-.opening {
-  background: radial-gradient(
-    ellipse at 73% 47%,
-    #433024 0%,
-    #2c2019 36%,
-    #201813 73%
-  );
-  color: var(--cream);
-  position: relative;
-  isolation: isolate;
+main section[id] {
+  scroll-margin-top: var(--compact-header);
+}
+::selection {
+  background: #d8af98;
+  color: var(--ink);
 }
 .craft:before,
 footer:before {
@@ -99,12 +100,14 @@ footer:before {
   z-index: -1;
 }
 header {
-  position: relative;
-  z-index: 5;
-  margin: auto;
-  max-width: 1700px;
-  padding: 0 var(--gutter);
-  height: 82px;
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 6;
+  padding: 0 max(var(--gutter), calc((100vw - 1520px) / 2));
+  height: var(--header-height);
+  background: transparent;
+  color: var(--cream);
+  transition: height 250ms var(--ease), background-color 250ms var(--ease);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -116,7 +119,17 @@ header:after {
   left: var(--gutter);
   right: var(--gutter);
   height: 1px;
-  background: #f1d8bd30;
+  background: #f5f0e82e;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 250ms var(--ease);
+}
+header.scrolled {
+  height: var(--compact-header);
+  background: #111;
+}
+header.scrolled:after {
+  opacity: 1;
 }
 .brand {
   display: inline-flex;
@@ -160,13 +173,13 @@ header nav a {
 }
 .bag-link {
   gap: 0.65rem;
-  border: 1px solid #e2cbb85c;
-  border-radius: 2rem;
+  border: 1px solid currentColor;
+  border-radius: 2px;
   padding: 0.62rem 0.85rem 0.62rem 1rem;
   font-size: 0.88rem;
   min-height: 44px;
 }
-.bag-link span {
+.bag-count {
   display: grid;
   place-items: center;
   width: 1.38rem;
@@ -203,7 +216,7 @@ header nav a {
   align-items: center;
   justify-content: center;
   gap: 1.1rem;
-  border-radius: 3rem;
+  border-radius: 2px;
   min-height: 48px;
   padding: 0.85rem 1.45rem;
   font-weight: 600;
@@ -260,8 +273,8 @@ header nav a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid #e3c2a634;
-  color: #d8c7b8;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
   font-size: 0.74rem;
   letter-spacing: 0.025em;
 }
@@ -270,7 +283,7 @@ header nav a {
   gap: 0.55rem;
 }
 .down-ring {
-  border: 1px solid #e2c5a75c;
+  border: 1px solid var(--line);
   border-radius: 50%;
   width: 28px;
   height: 28px;
@@ -278,7 +291,7 @@ header nav a {
   place-items: center;
 }
 .hero-location > svg {
-  color: var(--caramel);
+  color: var(--terracotta-ink);
 }
 .hero-location {
   margin-left: auto;
@@ -289,7 +302,7 @@ header nav a {
   height: 44px;
   display: grid;
   place-items: center;
-  color: #d8c7b8;
+  color: var(--muted);
 }
 .motion-switch svg {
   width: 15px;
@@ -300,16 +313,13 @@ header nav a {
     max(var(--gutter), calc((100vw - 1520px) / 2));
 }
 h2 {
-  font-size: clamp(3rem, 5.7vw, 7rem);
-  font-weight: 520;
-  line-height: 1;
-  letter-spacing: -0.075em;
+  font: 400 clamp(3.3rem, 6.5vw, 7.4rem)/0.93 var(--serif);
+  letter-spacing: -0.035em;
   text-wrap: balance;
 }
 h2 em {
-  font: italic 400 1.12em/0.9 var(--serif);
-  letter-spacing: -0.055em;
-  color: #875234;
+  font-weight: 400;
+  color: var(--terracotta-ink);
 }
 .rule {
   margin-bottom: 1.65rem;
@@ -317,9 +327,19 @@ h2 em {
 }
 .manifesto {
   display: grid;
-  grid-template-columns: 1fr 0.87fr;
-  gap: 10%;
+  grid-template-columns: 0.8fr 1fr;
+  gap: 9%;
   align-items: center;
+  background: var(--ink);
+  color: var(--cream);
+}
+.manifesto h2 em,
+.manifesto .rule,
+.manifesto figcaption {
+  color: #e3b494;
+}
+.manifesto .manifesto-text > p:not(.eyebrow) {
+  color: #d8c9bc;
 }
 .manifesto-text > p:not(.eyebrow),
 .order > div > p:not(.eyebrow) {
@@ -333,7 +353,8 @@ h2 em {
 }
 .manifesto-img img {
   width: 100%;
-  aspect-ratio: 1.27;
+  aspect-ratio: 1.13;
+  object-position: center 54%;
 }
 figcaption {
   font-size: 0.8rem;
@@ -341,7 +362,7 @@ figcaption {
   color: var(--muted);
 }
 .menu {
-  background: #eae1d3;
+  background: var(--mineral);
 }
 .section-title,
 .buy,
@@ -379,7 +400,7 @@ small {
 }
 .product {
   display: grid;
-  grid-template-columns: 1.05fr 1fr;
+  grid-template-columns: 1.28fr 0.8fr;
   align-items: center;
   gap: 8%;
 }
@@ -389,7 +410,8 @@ small {
 }
 .product-photo img {
   width: 100%;
-  aspect-ratio: 1.22;
+  aspect-ratio: 1.32;
+  object-position: center 54%;
 }
 @media (prefers-reduced-motion: no-preference) {
   .product-photo img {
@@ -435,16 +457,24 @@ small {
 }
 .craft,
 footer {
-  background: #251c16;
+  background: var(--ink);
   color: var(--cream);
   position: relative;
   isolation: isolate;
 }
-.craft h2 em,
+.craft {
+  background: var(--olive);
+}
+.craft h2 em {
+  color: #eee2c7;
+}
 footer h2 em {
   color: var(--caramel);
 }
 .craft .rule,
+.stage .eyebrow {
+  color: #eee2c7;
+}
 footer .rule {
   color: #ddb28b;
 }
@@ -454,7 +484,7 @@ footer .rule {
 }
 .stages {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: 1.3fr 1fr 0.85fr;
   gap: 2rem;
 }
 .stage img {
@@ -463,20 +493,17 @@ footer .rule {
   object-fit: cover;
   margin-bottom: 1.3rem;
 }
-.stage .eyebrow {
-  color: var(--caramel);
-}
 .stage h3 {
   font: 400 clamp(1.7rem, 3vw, 3.6rem)/1.07 var(--serif);
   margin: 0.45rem 0;
 }
 .stage p:last-child {
-  color: #d1c4b7;
+  color: #f0e9de;
   line-height: 1.55;
   max-width: 40ch;
 }
 .order {
-  background: #e6dbca;
+  background: var(--mineral);
   display: grid;
   grid-template-columns: 0.95fr 1fr;
   gap: 8%;
@@ -574,7 +601,7 @@ footer.section {
 }
 .closing {
   position: relative;
-  text-align: center;
+  text-align: left;
 }
 .closing .steam {
   left: 64%;
@@ -592,8 +619,8 @@ footer.section {
 .closing > svg {
   width: 56px;
   height: 48px;
-  color: var(--caramel);
-  margin: 0 auto 1.4rem;
+  margin: 0 0 1.4rem;
+  color: var(--terracotta);
 }
 .closing .button {
   margin-top: 2rem;
@@ -744,7 +771,8 @@ footer.section {
   header nav a:hover,
   .hero-foot a:hover,
   .footer-base a:hover {
-    color: var(--caramel);
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
   }
   .caramel:hover {
     background: #f0c497;
@@ -842,9 +870,8 @@ footer.section {
 @media (max-width: 700px) {
   :root {
     --gutter: clamp(1.2rem, 5.8vw, 2rem);
-  }
-  header {
-    height: 66px;
+    --header-height: 66px;
+    --compact-header: 56px;
   }
   .brand {
     font-size: 1.48rem;
@@ -870,9 +897,9 @@ footer.section {
     left: 0;
     right: 0;
     padding: 0.6rem var(--gutter) 1rem;
-    background: #251b15;
-    border-block: 1px solid #a68b733a;
-    box-shadow: 0 12px 20px #130c0833;
+    background: #111;
+    color: var(--cream);
+    border-block: 1px solid #f5f0e82e;
   }
   header nav.expanded {
     display: flex;
@@ -976,6 +1003,17 @@ footer.section {
   }
 }
 
+@media (max-width: 355px) {
+  .bag-label {
+    position: absolute;
+    clip-path: inset(50%);
+  }
+  .bag-link {
+    gap: 0.35rem;
+    padding-inline: 0.48rem;
+  }
+}
+
 .gallery-heading,
 .gallery-controls {
   display: flex;
@@ -1053,7 +1091,7 @@ footer.section {
    reveal the three photographs. Every frame occupies the same art-directed
    stage, so the section releases only after the third has been revealed. */
 .gallery.is-directed {
-  height: 100svh;
+  height: calc(100svh - var(--compact-header));
   min-height: 0;
   padding-block: clamp(1.5rem, 4.7svh, 3.2rem) clamp(1.25rem, 3.8svh, 2.5rem);
   display: flex;
@@ -1146,6 +1184,12 @@ footer.section {
   color: var(--muted);
   text-align: right;
 }
+.gallery {
+  background: var(--cream);
+}
+.gallery.is-directed .photo-rail {
+  margin-right: calc(-1 * max(var(--gutter), (100vw - 1520px) / 2));
+}
 .menu {
   transition: background-color 0.24s ease;
 }
@@ -1156,7 +1200,7 @@ footer.section {
   background-color: #eadfcf;
 }
 .menu[data-drink="cold-brew"] {
-  background-color: #e4cca9;
+  background-color: #dfd1bf;
 }
 @media (max-width: 700px) {
   .photo-rail .gallery-panel {

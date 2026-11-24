@@ -22,7 +22,7 @@ export function directGallery(section: HTMLElement, onIndex: (index: number) => 
       defaults: { ease: "none" },
       scrollTrigger: {
         trigger: section,
-        start: "top top",
+        start: () => "top " + getComputedStyle(section).scrollMarginTop,
         end: () => "+=" + Math.round(window.innerHeight * 2.5),
         pin: true,
         scrub: 0.35,
@@ -127,7 +127,7 @@ export function directOpening(root: HTMLElement) {
         0,
       )
       .to(
-        [".hero-caption", ".hero-foot", runway.querySelector("header")],
+        [".hero-caption", ".hero-foot"],
         { autoAlpha: 0, y: -12, duration: 0.3 },
         0,
       )
