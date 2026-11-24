@@ -10,44 +10,38 @@ export interface GalleryDirector {
 
 export function directGallery(section: HTMLElement, onIndex: (index: number) => void): GalleryDirector {
   const panels = Array.from(section.querySelectorAll<HTMLElement>(".gallery-panel"));
-  const images = panels.map((panel) => panel.querySelector<HTMLImageElement>("img")!);
-  const vapor = section.querySelector<HTMLElement>(".gallery-vapor")!;
+  const rail = section.querySelector<HTMLElement>(".photo-rail")!;
+  const track = section.querySelector<HTMLElement>(".gallery-track")!;
+  const travel = () => Math.max(0, track.scrollWidth - rail.clientWidth);
+  const stop = (index: number) => Math.min(travel(), panels[index].offsetLeft - panels[0].offsetLeft);
   let trigger: ScrollTrigger | undefined;
+  let navigation: gsap.core.Tween | undefined;
   const media = gsap.matchMedia();
-  media.add("(prefers-reduced-motion: no-preference)", () => {
+  media.add("(prefers-reduced-motion: no-preference) and (min-height: 540px)", () => {
     section.classList.add("is-directed");
-    gsap.set(panels.slice(1), { clipPath: "circle(0% at 52% 58%)" });
-    gsap.set(images.slice(1), { scale: 1.12 });
-    const timeline = gsap.timeline({
-      defaults: { ease: "none" },
+    rail.scrollLeft = 0;
+    const tween = gsap.to(track, {
+      x: () => -travel(),
+      ease: "none",
+      onUpdate() {
+        const position = -Number(gsap.getProperty(track, "x"));
+        const closest = panels.reduce((best, _, index) =>
+          Math.abs(stop(index) - position) < Math.abs(stop(best) - position) ? index : best, 0);
+        onIndex(closest);
+      },
       scrollTrigger: {
         trigger: section,
         start: () => "top " + getComputedStyle(section).scrollMarginTop,
-        end: () => "+=" + Math.round(window.innerHeight * 2.5),
+        end: () => "+=" + Math.max(travel(), window.innerHeight * 1.25),
         pin: true,
-        scrub: 0.35,
+        scrub: 0.5,
         invalidateOnRefresh: true,
-        onUpdate(self) {
-          onIndex(Math.min(2, Math.round(self.progress * 2)));
-        },
       },
     });
-    trigger = timeline.scrollTrigger;
-    // Each image emerges as a growing coffee-crema ripple. The vapor
-    // briefly veils the seam while the preceding photograph recedes.
-    timeline
-      .to(images[0], { scale: 1.08, duration: 1 }, 0)
-      .to(panels[1], { clipPath: "circle(120% at 52% 58%)", duration: 1 }, 0)
-      .to(images[1], { scale: 1, duration: 1 }, 0)
-      .fromTo(vapor, { opacity: 0, xPercent: -28 }, { opacity: 0.62, xPercent: 2, duration: 0.28 }, 0.09)
-      .to(vapor, { opacity: 0, xPercent: 29, duration: 0.47 }, 0.36)
-      .to(images[1], { scale: 1.08, duration: 1 }, 1)
-      .to(panels[2], { clipPath: "circle(120% at 52% 58%)", duration: 1 }, 1)
-      .to(images[2], { scale: 1, duration: 1 }, 1)
-      .fromTo(vapor, { opacity: 0, xPercent: -28 }, { opacity: 0.62, xPercent: 2, duration: 0.28 }, 1.09)
-      .to(vapor, { opacity: 0, xPercent: 29, duration: 0.47 }, 1.36);
+    trigger = tween.scrollTrigger;
     ScrollTrigger.refresh();
     return () => {
+      navigation?.kill();
       trigger = undefined;
       section.classList.remove("is-directed");
       onIndex(0);
@@ -56,8 +50,9 @@ export function directGallery(section: HTMLElement, onIndex: (index: number) => 
   return {
     goTo(index) {
       if (!trigger) return false;
-      gsap.to(window, {
-        scrollTo: { y: trigger.start + (trigger.end - trigger.start) * index / 2, autoKill: true },
+      navigation?.kill();
+      navigation = gsap.to(window, {
+        scrollTo: { y: trigger.start + (trigger.end - trigger.start) * stop(index) / Math.max(1, travel()), autoKill: true },
         duration: 0.68,
         ease: "power2.inOut",
         overwrite: "auto",

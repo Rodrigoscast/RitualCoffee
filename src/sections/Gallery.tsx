@@ -20,7 +20,7 @@ export function Gallery() {
     const el = rail.current!;
 
     function updateRail() {
-      if (director.current) return;
+      if (section.current?.classList.contains("is-directed")) return;
       const figures = Array.from(el.querySelectorAll<HTMLElement>("figure"));
       const stops = figures.map((figure) => figure.offsetLeft - figures[0].offsetLeft);
       const closest = stops.reduce(
@@ -111,21 +111,27 @@ export function Gallery() {
           }
         }}
       >
-        {photographs.map(([id, alt, label], index) => (
-          <figure key={id} className="gallery-panel" data-active={index === active}>
-            <img
-              src={"/images/" + (id === "preparo" ? "preparo-hd" : id) + ".webp"}
-              loading="lazy"
-              alt={alt}
-              width={id === "preparo" ? 1863 : 621}
-              height={id === "preparo" ? 1863 : 621}
-            />
-            <figcaption>{label}</figcaption>
-          </figure>
-        ))}
-        <div className="gallery-vapor" aria-hidden="true" />
+        <div className="gallery-track">
+          {photographs.map(([id, alt, label]) => (
+            <figure key={id} className="gallery-panel">
+              <img
+                src={"/images/" + (id === "preparo" ? "preparo-hd" : id) + ".webp"}
+                loading="lazy"
+                alt={alt}
+                width={id === "preparo" ? 1863 : 621}
+                height={id === "preparo" ? 1863 : 621}
+              />
+              <figcaption>{label}</figcaption>
+            </figure>
+          ))}
+        </div>
       </div>
-      <p className="gallery-scroll-hint" aria-hidden="true">Role para descobrir ↓</p>
+      <p className="gallery-scroll-hint" aria-hidden="true">
+        <span className="gallery-progress">
+          <span style={{ transform: `scaleX(${(active + 1) / photographs.length})` }} />
+        </span>
+        Role para explorar <Icon name="arrow" />
+      </p>
     </section>
   );
 }

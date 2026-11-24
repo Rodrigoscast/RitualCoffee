@@ -58,7 +58,7 @@ function App() {
             reveal.unobserve(e.target);
           }
         }),
-      { rootMargin: "0px 0px -24px 0px" },
+      { rootMargin: `0px 0px -${Math.round(Math.min(160, window.innerHeight * 0.14))}px 0px` },
     );
     targets.forEach((el) => {
       el.classList.add("reveal-ready");
@@ -170,7 +170,7 @@ function App() {
               termina no balcão, com a xícara nas suas mãos.
             </p>
           </div>
-          <figure className="manifesto-img reveal">
+          <figure className="manifesto-img reveal reveal-right">
             <img
               src="/images/preparo-hd.webp"
               loading="lazy"
@@ -225,7 +225,7 @@ function App() {
           </ul>
         </section>
         <section className="section visit" id="visite">
-          <div className="map reveal">
+          <div className="map reveal reveal-left">
             <img
               src="/mapa.svg"
               loading="lazy"
